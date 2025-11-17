@@ -7,10 +7,8 @@
 #include <std_srvs/srv/trigger.hpp>
 #include <memory> // std::unique_ptr
 #include <random>
-#include <mutex> // <-- EZ AZ ÚJ SOR
-
-// A saját logikai osztályunk
-#include "var_kqt_feleves/maze_solver.hpp"
+#include <mutex>
+#include "maze_solver.hpp"
 
 // ANSI Színkódok a logoláshoz
 #define LOG_RESET "\033[0m"
@@ -50,7 +48,7 @@ private:
     std::mt19937 gen_; // Random be/kijárat választáshoz
     int map_size_;
     bool automatic_mode_;
-    std::mutex run_mutex_; // <-- EZ AZ ÚJ SOR
+    std::mutex run_mutex_;
 };
 
 #endif // PATHFINDER_NODE_HPP

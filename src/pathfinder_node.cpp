@@ -1,4 +1,4 @@
-#include "var_kqt_feleves/pathfinder_node.hpp"
+#include "pathfinder_node.hpp"
 #include <sstream>
 #include <iomanip>
 
@@ -41,7 +41,7 @@ PathfinderNode::PathfinderNode() : Node("pathfinder_node"), gen_(std::random_dev
 
 void PathfinderNode::timer_callback()
 {
-    std::lock_guard<std::mutex> lock(run_mutex_); // <-- EZ AZ ÚJ SOR
+    std::lock_guard<std::mutex> lock(run_mutex_);
     RCLCPP_INFO(this->get_logger(), " ");
     RCLCPP_INFO(this->get_logger(), "---------------------------------");
     RCLCPP_INFO(this->get_logger(), "--- Időzített újratervezés ---");
@@ -54,7 +54,7 @@ void PathfinderNode::handle_trigger_service(
     const std::shared_ptr<std_srvs::srv::Trigger::Request> request,
     std::shared_ptr<std_srvs::srv::Trigger::Response> response)
 {
-    std::lock_guard<std::mutex> lock(run_mutex_); // <-- EZ AZ ÚJ SOR
+    std::lock_guard<std::mutex> lock(run_mutex_);
     (void)request;
     RCLCPP_INFO(this->get_logger(), " ");
     RCLCPP_INFO(this->get_logger(), "---------------------------------");
@@ -89,7 +89,7 @@ std::pair<bool, std::string> PathfinderNode::run_pathfinding_cycle()
     // 3. LEGRÖVIDEBB út keresése (A*)
     std::vector<Point> shortest_path = solver_->findShortestPathAStar(start_point, end_point);
 
-    // 4. ÖSSZES út keresése (DFS) - KIKAPCSOLVA (túl lassú 50x50-en)
+    // 4. ÖSSZES út keresése (DFS)
     std::vector<std::vector<Point>> all_paths = solver_->findAllPathsDFS(start_point, end_point);
 
     auto end_time = std::chrono::high_resolution_clock::now();
@@ -169,7 +169,7 @@ void PathfinderNode::publish_visualizations(
     marker_array.markers.push_back(delete_marker);
     delete_marker.ns = "points";
     marker_array.markers.push_back(delete_marker);
-    delete_marker.ns = "other_paths"; // Ezt is töröljük, biztos, ami biztos
+    delete_marker.ns = "other_paths";
     marker_array.markers.push_back(delete_marker);
 
 
@@ -181,7 +181,7 @@ void PathfinderNode::publish_visualizations(
     shortest_path_marker.id = 1;
     shortest_path_marker.type = visualization_msgs::msg::Marker::LINE_STRIP;
     shortest_path_marker.action = visualization_msgs::msg::Marker::ADD;
-    shortest_path_marker.scale.x = map_resolution * 0.5; // Vastag
+    shortest_path_marker.scale.x = map_resolution * 0.5; // Vastagság
     shortest_path_marker.color.r = 1.0;
     shortest_path_marker.color.g = 0.0;
     shortest_path_marker.color.b = 0.0;

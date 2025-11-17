@@ -1,4 +1,4 @@
-#include "var_kqt_feleves/maze_solver.hpp"
+#include "maze_solver.hpp"
 #include <stack>
 #include <queue>
 #include <algorithm>
@@ -79,7 +79,7 @@ void MazeSolver::generateMaze(std::vector<Point>& out_entrances, std::vector<Poi
     }
 
     // Belső falak kiütése (több útvonal)
-    int num_walls_to_break = map_size_ * 2; // 50x50-esnél kb 100 fal
+    int num_walls_to_break = map_size_ * 2;
     std::uniform_int_distribution<> pos_dist(1, map_size_ - 2);
     
     for (int i = 0; i < num_walls_to_break; ++i) {
