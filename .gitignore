@@ -2,3 +2,15 @@ build/
 install/
 log/
 .vscode/
+build_*
+install_*
+*.log
+*~
+*.o
+*.so
+*.a
+*.out
+*.swp
+.vscode/
+.idea/
+*.code-workspace
