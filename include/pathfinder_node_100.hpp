@@ -6,11 +6,12 @@
 #include <visualization_msgs/msg/marker_array.hpp>
 #include <std_srvs/srv/trigger.hpp>
 #include <memory>
+#include <vector>
 #include <random>
 #include <mutex>
-#include "maze_solver.hpp" // A régi solvert használjuk!
+#include "maze_solver.hpp" // Feltételezzük, hogy ez ugyanott van, vagy az include path-on
 
-// ANSI Színkódok
+// ANSI Színkódok a terminál logoláshoz
 #define LOG_RESET "\033[0m"
 #define LOG_RED "\033[1;31m"
 #define LOG_GREEN "\033[1;32m"
@@ -23,14 +24,22 @@ public:
     PathfinderNode100();
 
 private:
+    // --- Callback függvények ---
     void timer_callback();
     void handle_trigger_service(
         const std::shared_ptr<std_srvs::srv::Trigger::Request> request,
         std::shared_ptr<std_srvs::srv::Trigger::Response> response);
 
+    // --- Fő logika ---
     void run_generation_cycle();
-    void publish_visualizations();
 
+    // --- Vizualizáció (Most már várja az útvonalat és a pontokat is) ---
+    void publish_visualizations(
+        const std::vector<Point>& shortest_path, 
+        Point start, 
+        Point end);
+
+    // --- Változók ---
     rclcpp::TimerBase::SharedPtr timer_;
     rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr trigger_service_;
     rclcpp::Publisher<nav_msgs::msg::OccupancyGrid>::SharedPtr grid_pub_;
